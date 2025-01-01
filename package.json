@@ -17,8 +17,12 @@
   "pluginType": "elizaos:plugin:1.0.0",
   "pluginParameters": {
     "type": "object",
-    "required": ["cronoszkevmPrivateKey"],
+    "required": ["cronoszkevmPrivateKey", "cronoszkevmAddress"],
     "properties": {
+      "cronoszkevmAddress": {
+        "type": "string",
+        "description": "Cronoszkevm Address"
+      },
       "cronoszkevmPrivateKey": {
         "type": "string",
         "description": "Cronoszkevm Private Key"
@@ -26,6 +30,7 @@
     }
   },
   "pluginEnv": {
+    "CRONOSZKEVM_ADDRESS": "cronoszkevmAddress",
     "CRONOSZKEVM_PRIVATE_KEY": "cronoszkevmPrivateKey"
   }
 }
