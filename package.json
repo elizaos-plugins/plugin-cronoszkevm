@@ -13,5 +13,19 @@
   },
   "peerDependencies": {
     "whatwg-url": "7.1.0"
+  },
+  "pluginType": "elizaos:plugin:1.0.0",
+  "pluginParameters": {
+    "type": "object",
+    "required": ["cronoszkevmPrivateKey"],
+    "properties": {
+      "cronoszkevmPrivateKey": {
+        "type": "string",
+        "description": "Cronoszkevm Private Key"
+      }
+    }
+  },
+  "pluginEnv": {
+    "CRONOSZKEVM_PRIVATE_KEY": "cronoszkevmPrivateKey"
   }
 }
