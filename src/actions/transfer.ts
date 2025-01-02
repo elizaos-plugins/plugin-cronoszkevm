@@ -1,4 +1,5 @@
 import {
+    Action,
     ActionExample,
     Content,
     HandlerCallback,
@@ -6,7 +7,6 @@ import {
     Memory,
     ModelClass,
     State,
-    type Action,
     elizaLogger,
     composeContext,
     generateObject,
@@ -92,13 +92,19 @@ export default {
         return true;
     },
     description: "Transfer tokens from the agent's wallet to another address",
-    handler: async (
+    handler: async ({
+        runtime,
+        message,
+        state,
+        options,
+        callback,
+    }: {
         runtime: IAgentRuntime,
         message: Memory,
         state: State,
-        _options: { [key: string]: unknown },
-        callback?: HandlerCallback
-    ): Promise<boolean> => {
+        options: any,
+        callback: HandlerCallback
+    }) => {
         elizaLogger.log("Starting SEND_TOKEN handler...");
 
         // Initialize or update state
