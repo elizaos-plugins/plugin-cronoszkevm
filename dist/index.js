@@ -3974,8 +3974,11 @@ var ERC20_OVERRIDE_INFO = {
 // src/hooks/useGetAccount.ts
 import { privateKeyToAccount } from "viem/accounts";
 var useGetAccount = (runtime) => {
-  const PRIVATE_KEY = runtime.getSetting("CRONOSZKEVM_PRIVATE_KEY");
-  return privateKeyToAccount(`0x${PRIVATE_KEY}`);
+  const privateKey = runtime.getSetting("CRONOSZKEVM_PRIVATE_KEY");
+  if (!privateKey) {
+    throw new Error("CRONOSZKEVM_PRIVATE_KEY not set");
+  }
+  return privateKeyToAccount(`0x${privateKey}`);
 };
 
 // src/hooks/useGetWalletClient.ts
@@ -4061,13 +4064,14 @@ var TransferAction = {
   description: "Transfer tokens from the agent's wallet to another address",
   handler: async (runtime, message, state, _options, callback) => {
     elizaLogger.log("Starting Cronos zkEVM SEND_TOKEN handler...");
-    if (!state) {
-      state = await runtime.composeState(message);
+    let currentState = state;
+    if (!currentState) {
+      currentState = await runtime.composeState(message);
     } else {
-      state = await runtime.updateRecentMessageState(state);
+      currentState = await runtime.updateRecentMessageState(currentState);
     }
     const transferContext = composeContext({
-      state,
+      state: currentState,
       template: transferTemplate
     });
     const content = (await generateObject({
@@ -4130,11 +4134,11 @@ var TransferAction = {
         });
       }
       elizaLogger.success(
-        "Transfer completed successfully! Transaction hash: " + hash
+        `Transfer completed successfully! Transaction hash: ${hash}`
       );
       if (callback) {
         callback({
-          text: "Transfer completed successfully! Transaction hash: " + hash,
+          text: `Transfer completed successfully! Transaction hash: ${hash}`,
           content: {}
         });
       }
